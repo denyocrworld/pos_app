@@ -1,5 +1,3 @@
-Tentu, saya akan menggunakan tipe data `integer` untuk `order_id` dan `product_id` serta mengganti nama tabel perantara menjadi `order_products`. Berikut adalah langkah-langkahnya:
-
 **Langkah 1: Membuat Database MySQL**
 
 1. Buka terminal atau command prompt Anda.
