@@ -36,7 +36,7 @@ class OrderController extends Controller
         $query = Order::with('products'); // Menyertakan produk dalam respons JSON
 
         // Filter berdasarkan order_id jika parameter ada
-        if ($request->has('order_id')) {
+        if ($request->has('order_id') && $request->input('order_id') != "") {
             $query->where('id', $request->input('order_id'));
         }
 
@@ -48,13 +48,15 @@ class OrderController extends Controller
 
         // Pengurutan berdasarkan 'created_at' dengan urutan menurun (desc) jika parameter 'sort' adalah 'desc'
         if ($request->input('sort') === 'desc') {
-            $query->orderBy('created_at', 'desc');
+            $query->orderBy('customer_name', 'desc');
+        } else {
+            $query->orderBy('customer_name', 'asc');
         }
 
         // Menambahkan paging dengan jumlah data per halaman (contoh: 10 data per halaman)
         $perPage = $request->input('per_page', 10); // Jumlah data per halaman, default 10
         $orders = $query->paginate($perPage);
 
-        return response()->json(['data' => $orders]);
+        return response()->json($orders);
     }
 }

@@ -135,7 +135,9 @@
     
    public function products()
    {
-       return $this->belongsToMany(Product::class, 'order_products')->withPivot('quantity');
+       return $this->belongsToMany(Product::class, 'order_products')
+            ->as('order_product')
+            ->withPivot('quantity');
    }
    ```
 
@@ -270,7 +272,7 @@ class OrderController extends Controller
         $query = Order::with('products'); // Menyertakan produk dalam respons JSON
 
         // Filter berdasarkan order_id jika parameter ada
-        if ($request->has('order_id')) {
+        if ($request->has('order_id') && $request->input('order_id') != "") {
             $query->where('id', $request->input('order_id'));
         }
 
@@ -289,7 +291,7 @@ class OrderController extends Controller
         $perPage = $request->input('per_page', 10); // Jumlah data per halaman, default 10
         $orders = $query->paginate($perPage);
 
-        return response()->json(['data' => $orders]);
+        return response()->json($orders);
     }
 
 }
