@@ -92,8 +92,15 @@
            $table->text('address');
            $table->timestamps();
        });
+   }
+   ```
 
-       Schema::create('order_products', function (Blueprint $table) {
+   Contoh untuk tabel `order_products` dan tabel perantara `order_products`:
+
+   ```php
+   public function up()
+   {
+        Schema::create('order_products', function (Blueprint $table) {
            $table->id();
            $table->integer('order_id');
            $table->integer('product_id');
@@ -140,14 +147,7 @@
 
 **Langkah 7: Membuat Controller (Lanjutan)**
 
-1. Setelah membuat model dan migrasi, buatlah controller untuk produk (ProductController) dan pesanan (OrderController) dengan perintah berikut:
-
-   ```bash
-   php artisan make:controller ProductController
-   php artisan make:controller OrderController
-   ```
-
-2. Buka controller `ProductController` yang baru saja dibuat dalam direktori `app/Http/Controllers` dan isi dengan metode-metode CRUD untuk produk:
+1. Edit ProductController dan OrderController seperti dibawah ini:
 
 **ProductController.php:**
 
@@ -285,18 +285,18 @@ Setelah membuat controller, langkah selanjutnya adalah membuat data dummy produk
        public function run()
        {
            Product::create([
-               'photo' => 'product1.jpg',
-               'product_name' => 'Product 1',
-               'price' => 19.99,
-               'description' => 'Description for Product 1',
-           ]);
-
-           Product::create([
-               'photo' => 'product2.jpg',
-               'product_name' => 'Product 2',
-               'price' => 29.99,
-               'description' => 'Description for Product 2',
-           ]);
+            'photo' => 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+            'product_name' => 'Camera Sony DX10',
+            'price' => 93.99,
+            'description' => 'Description for Product 1',
+        ]);
+ 
+        Product::create([
+            'photo' => 'https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80',
+            'product_name' => 'Car Miniature',
+            'price' => 46.99,
+            'description' => 'Description for Product 2',
+        ]);
 
            // Tambahkan data produk lainnya sesuai kebutuhan
        }
@@ -365,9 +365,29 @@ Setelah membuat controller, langkah selanjutnya adalah membuat data dummy produk
    php artisan db:seed --class=OrderSeeder
    ```
 
-**Langkah 9: Pengujian API**
+**Langkah 9: Registrasi di routes/api.php**
+
+1. Tambahkan endpoint-nya di routes/api.php
+```php
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
+
+// Rute untuk produk (ProductController)
+Route::resource('products', ProductController::class);
+
+// Rute untuk pesanan (OrderController)
+Route::prefix('orders')->group(function () {
+    Route::post('/', [OrderController::class, 'create']); // Membuat pesanan
+    Route::get('/', [OrderController::class, 'index']); // Menampilkan semua pesanan
+});
+```
+**Langkah 10: Pengujian API**
 
 1. Untuk menguji API `ProductController` dan `OrderController`, Anda dapat menggunakan aplikasi seperti Postman atau Insomnia, atau Anda dapat menggunakan perintah `curl` atau JavaScript untuk membuat permintaan HTTP ke endpoint yang sesuai.
+    ```bash
+    php artisan serve --host 0.0.0.0
+    ```
 
 2. Contoh penggunaan API untuk menampilkan semua produk:
 
