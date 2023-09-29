@@ -1,0 +1,6 @@
+{
+    "modules": [
+        "user",
+        "product"
+    ]
+}
