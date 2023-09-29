@@ -390,7 +390,3 @@ Setelah membuat controller, langkah selanjutnya adalah membuat data dummy produk
    ```
    GET http://localhost:8000/api/orders
    ```
-
-Dengan langkah-langkah ini, Anda telah membuat data dummy produk dan pesanan serta dapat menguji API Anda untuk memastikan semuanya berfungsi dengan baik.
-
-Jika Anda memiliki pertanyaan lebih lanjut atau membutuhkan bantuan lebih lanjut dalam langkah-langkah berikutnya, jangan ragu untuk bertanya.
