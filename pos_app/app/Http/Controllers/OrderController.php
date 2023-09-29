@@ -31,9 +31,30 @@ class OrderController extends Controller
         return response()->json(['message' => 'Order created successfully', 'data' => $order], 201);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with('products')->get();
+        $query = Order::with('products'); // Menyertakan produk dalam respons JSON
+
+        // Filter berdasarkan order_id jika parameter ada
+        if ($request->has('order_id')) {
+            $query->where('id', $request->input('order_id'));
+        }
+
+        // Filter berdasarkan customer_name dengan penggunaan LIKE jika parameter ada
+        if ($request->has('customer_name')) {
+            $customerName = $request->input('customer_name');
+            $query->where('customer_name', 'LIKE', "%$customerName%");
+        }
+
+        // Pengurutan berdasarkan 'created_at' dengan urutan menurun (desc) jika parameter 'sort' adalah 'desc'
+        if ($request->input('sort') === 'desc') {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        // Menambahkan paging dengan jumlah data per halaman (contoh: 10 data per halaman)
+        $perPage = $request->input('per_page', 10); // Jumlah data per halaman, default 10
+        $orders = $query->paginate($perPage);
+
         return response()->json(['data' => $orders]);
     }
 }
