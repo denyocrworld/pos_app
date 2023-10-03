@@ -229,4 +229,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 ```
 
-Dengan langkah-langkah di atas, Anda telah membuat proyek Laravel yang menggunakan otentikasi Sanctum, memiliki CRUD untuk produk, serta terapkan paging, sorting, dan searching pada endpoint products. Endpoint products juga dilindungi oleh Sanctum sehingga hanya pengguna yang terotentikasi yang dapat mengaksesnya. Anda dapat menyesuaikan lebih lanjut sesuai dengan kebutuhan proyek Anda.
